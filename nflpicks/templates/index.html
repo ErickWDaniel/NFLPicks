@@ -1,0 +1,93 @@
+{% extends "layout.html" %} {% block content %}
+        <div class="row">
+            <div class="col-md-auto">
+                <!-- empty -->
+            </div>
+
+            <div class="card w-75">
+                <img class="img-fluid" src="static/nfl-logo-s.png" alt="NFL Games">
+                <h5 class="card-header">{{data[0]['game_round']}}</h5>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <!-- empty -->
+                    </h5>
+                    <p class="card-text">
+                        <form name="teamForm" rounds={{gamesCount}}>
+                            <div class="col text-center">
+                                {% for game in data %}
+                                <div class="alert alert-secondary" role="alert">
+                                    <h6 class="alert-heading">{{game['game_date']}}</h6>
+                                    <br>
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn btn-outline-dark btn-lg btn-block">
+                                            <img class="rounded-circle w-25"
+                                                src="static/logos/{{game['games']['home'].lower().replace(' ','-')}}.png"
+                                                alt="{{game['games']['home']}}">
+                                            <input type="radio" name="options"
+                                                id="{{game['games']['home'].lower().replace(' ','-')}}"
+                                                autocomplete="off" checked> {{game['games']['home']}}
+                                        </label>
+                                        <label class="btn btn-secondary active">
+                                            <input type="radio" name="options"
+                                                id="{{game['games']['home'].lower().replace(' ','-')}}|{{game['games']['away'].lower().replace(' ','-')}}"
+                                                autocomplete="off">
+                                            <p class="col-md-12 center-block text-muted">{{'BST'}}</p>
+                                            <p class="col-md-12 center-block">{{game['time']['time']}}</p>
+                                        </label>
+                                        <label class="btn btn-outline-dark btn-lg btn-block">
+                                            <img class="rounded-circle w-25"
+                                                src="static/logos/{{game['games']['away'].lower().replace(' ','-')}}.png"
+                                                alt="{{game['games']['away']}}">
+                                            <input type="radio" name="options"
+                                                id="{{game['games']['away'].lower().replace(' ','-')}}"
+                                                autocomplete="off"> {{game['games']['away']}}
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <p class="text-center"> {{game['venue']['venue']}}.</p>
+                                    <hr>
+                                    <p class="mb-0 text-left"> Add <kbd>previous</kbd> games stats e.g. [win win loss].
+                                    </p>
+                                </div>
+                                {%endfor%}
+
+                                <br>
+
+                            </div>
+                        </form>
+                    </p>
+                    <a href="" class="btn btn-primary" id="submit-btn">Submit</a>
+                </div>
+            </div>
+
+            <div class="col col-lg-2">
+                <!-- empty -->
+                <div class="card mb-3">
+                    <img class="card-img-top" src="static/nfl-shield.jpg" alt="Mmh!">
+                    <div class="card-body">
+                        <h5 class="card-title">Stats</h5>
+                        <p class="card-text">Player (points):</p>
+                        <p "card-text">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Player 1
+                                    <span class="badge badge-primary badge-pill">112</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Player 2
+                                    <span class="badge badge-primary badge-pill">98</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Player 3
+                                    <span class="badge badge-primary badge-pill">32</span>
+                                </li>
+                            </ul>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

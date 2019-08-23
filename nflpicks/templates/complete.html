@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="card w-75">
+        <img class="img-fluid" src="static/nfl-logo-s.png" alt="NFL Games">
+        <h5 class="card-header">{{data['status']}}</h5>
+        <div class="card-body">
+            <h5 class="card-title">
+                    Thank you
+            </h5>
+                
+        </div>
+
+        <div class="col col-lg-2">
+            <!-- empty -->
+            <div class="card mb-3">
+                <img class="card-img-top" src="static/nfl-shield.jpg" alt="Mmh!">
+                <div class="card-body">
+                    <h5 class="card-title">Stats</h5>
+                    <p class="card-text">Player (points):</p>
+                    <p "card-text">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Player 1
+                                <span class="badge badge-primary badge-pill">112</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Player 2
+                                <span class="badge badge-primary badge-pill">98</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Player 3
+                                <span class="badge badge-primary badge-pill">32</span>
+                            </li>
+                        </ul>
+
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+   

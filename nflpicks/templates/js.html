@@ -1,0 +1,71 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    // get selected choice
+
+
+    const gamesCount = Number(document.querySelector('form[name=teamForm]').getAttribute('rounds'))
+    const teamsSelection = document.querySelectorAll('.btn-outline-dark')
+
+
+    var placeholder = {}
+    var games
+    for (let index = 0; index < teamsSelection.length; index++) {
+
+
+        teamsSelection[index].addEventListener('click', function (e) {
+            if (e.path.length === 14) {
+                var game = e.path[2].querySelector('.btn-secondary').querySelector('input[name=options]').id
+                var win = e.path[1].querySelector('input[name=options]').id
+
+                games = Object.assign(placeholder, { [game]: win })
+
+            }
+            else {
+                var game = e.path[1].querySelector('.btn-secondary').querySelector('input[name=options]').id
+                var win = e.path[0].querySelector('input[name=options]').id
+                games = Object.assign(placeholder, { [game]: win })
+            }
+            console.log(games)
+
+        })
+
+    }
+
+    window.onclick = function () {
+        // setup the button click
+
+        document.getElementById("submit-btn").onclick = function () {
+            console.log('games sent')
+            sendData(games);
+            taskCompleted(games);
+        };
+    }
+
+    function taskCompleted(send_data) {
+
+        if (Object.keys(send_data).length === gamesCount) {
+
+            console.log('We are done!')
+            window.location.replace("{{ url_for('completed') }}");
+        } else {
+            console.log('You are not done')
+            //send note that you are not done
+        }
+    }
+
+    function sendData(send_data) {
+        // ajax the JSON to the server
+        $.ajax({
+            type: 'POST',
+            url: "{{ url_for('index') }}",
+            data: JSON.stringify(send_data),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function (data) {
+            console.log(data);
+        });
+        // stop link reloading the page
+        event.preventDefault();
+    }
+
+</script>

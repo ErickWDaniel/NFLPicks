@@ -30,3 +30,14 @@ flask db migrate -m "moving data"
 # Update database with the migration
 flask db upgrade
 ````
+
+
+# See Data
+```python
+import sqlite3
+
+with sqlite3.connect('data.sqlite') as f:
+    c = f.cursor()
+    users = c.excute("SELECT * FROM users")
+    print(users.fetchall())
+```

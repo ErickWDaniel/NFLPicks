@@ -5,10 +5,10 @@ import pandas as pd
 from nflpicks import app, db
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, login_required, logout_user
-from nflpicks.models import User
+from nflpicks.models import User, Picks
 from nflpicks.forms import LoginForm, RegistrationForm
 
-from nflpicks.utils import get_games
+from nflpicks.utils import get_games, send_picks
 
 
 @app.route('/')
@@ -39,17 +39,8 @@ def index():
 
         dt = pd.DataFrame(user_df)
 
-        print(dt)
-        if dt.shape[0] == games_count:
-            print('True match completed')
-            dt['picker_id'] = user_data["user"]
-            dt['round'] = games_data['check_round']
-            dt = dt[['picker_id', 'round', 'winner', 'loser']]
-            with db.session() as s:
-                dt.to_sql('picks', con=s, if_exists='append')
-
-        else:
-            print('False match uncomplete')
+        # print(dt)
+        send_picks.send_to_db(dt, games_count, games_data, user_data)
 
     else:
         print('No Data yet!')

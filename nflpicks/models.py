@@ -39,7 +39,7 @@ class Picks(db.Model):
         db.String(60), db.ForeignKey('users.id'), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now())
     round = db.Column(db.Integer, nullable=False)
-    winner = db.Column(db.String(60),nullable=False)
+    winner = db.Column(db.String(60), nullable=False)
     loser = db.Column(db.String(60), nullable=False)
 
     def __init__(self, picker_id, round, winner, loser):
@@ -51,7 +51,6 @@ class Picks(db.Model):
 
     def __repr__(self):
         return f'Picker {self.picker}: Selected {self.winner}'
-
 
 
 @login_manager.user_loader

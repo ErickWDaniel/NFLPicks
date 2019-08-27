@@ -15,7 +15,9 @@
       <h2>NFL 2019 Picks!</h2>
     </div>
 
-    {% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated and completed %}
+    <p>Thank you, {{ current_user.username }}. We have register your picks!</p>
+    {% elif current_user.is_authenticated %}
     <p>Did you make your pickes, {{ current_user.username }}?</p>
     {% else %}
 
@@ -57,21 +59,21 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img src="static/featured/miami_dolphin.jpg" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
+          <div class="carousel-caption d-none d-md-block bg-gradient-light text-dark">
             <h5>Where is Miami Dolphins?</h5>
             <p>Will Dolphins go to playoff this season? Ask Johnny?</p>
           </div>
         </div>
         <div class="carousel-item">
           <img src="static/featured/tom_brady.jpg" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
+          <div class="carousel-caption d-none d-md-block bg-light text-dark">
             <h5>Rachel's Tom Brandy</h5>
             <p>It appares that Rachel's team is going to win this season. Again.</p>
           </div>
         </div>
         <div class="carousel-item">
           <img src="static/featured/panther.jpg" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
+          <div class="carousel-caption d-none d-md-block bg-light text-dark">
             <h5>Prayson to Panther</h5>
             <p>After watching Marvel, Black Panther, Prayson is cheering Panthers this season</p>
           </div>

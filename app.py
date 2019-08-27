@@ -13,7 +13,7 @@ from nflpicks.utils import get_games, send_picks
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', completed=False)
 
 
 @app.route('/games', methods=['GET', 'POST'])
@@ -42,6 +42,8 @@ def index():
         # print(dt)
         send_picks.send_to_db(dt, games_count, games_data, user_data)
 
+        status['completed'] = True
+
     else:
         print('No Data yet!')
 
@@ -54,9 +56,8 @@ def index():
 @login_required
 def completed():
     print('Complete Function: Completed')
-    return render_template('complete.html',
-                           data={'status': 'Completed'},
-                           status=True)
+    return render_template('home.html',
+                            completed=True)
 
 
 @app.route('/logout')

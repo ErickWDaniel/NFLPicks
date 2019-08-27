@@ -4,6 +4,7 @@
 
     const form = document.querySelector('form[name=teamForm]')
     const user = form.getAttribute('user')
+    console.log(form.getAttribute('rounds'))
     const gamesCount = Number(form.getAttribute('rounds'))
     const teamsSelection = document.querySelectorAll('.btn-outline-dark')
 
@@ -43,7 +44,7 @@
     }
 
     function taskCompleted(send_data) {
-
+        console.log(Object.keys(send_data).length, gamesCount)
         if (Object.keys(send_data).length === gamesCount) {
 
             console.log('We are done!')

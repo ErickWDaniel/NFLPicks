@@ -11,7 +11,6 @@ from nflpicks.forms import LoginForm, RegistrationForm
 from nflpicks.utils import get_games
 
 
-
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -19,13 +18,13 @@ def home():
 
 @app.route('/games', methods=['GET', 'POST'])
 @login_required
-def index(round=1):
+def index():
 
     # Data from Web
-    games_data = get_games.GetGames(round=round).round_games
+    games_data = get_games.GetGames().round_games
     query_data = games_data.to_dict(orient='records')
     games_count = games_data.shape[0]
-  
+
     # Data from current user
     user_data = request.get_json()
 
@@ -43,6 +42,12 @@ def index(round=1):
         print(dt)
         if dt.shape[0] == games_count:
             print('True match completed')
+            dt['picker_id'] = user_data["user"]
+            dt['round'] = games_data['check_round']
+            dt = dt[['picker_id', 'round', 'winner', 'loser']]
+            with db.session() as s:
+                dt.to_sql('picks', con=s, if_exists='append')
+
         else:
             print('False match uncomplete')
 

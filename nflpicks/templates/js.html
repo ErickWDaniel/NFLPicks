@@ -2,8 +2,9 @@
 <script type="text/javascript">
     // get selected choice
 
-
-    const gamesCount = Number(document.querySelector('form[name=teamForm]').getAttribute('rounds'))
+    const form = document.querySelector('form[name=teamForm]')
+    const user = form.getAttribute('user')
+    const gamesCount = Number(form.getAttribute('rounds'))
     const teamsSelection = document.querySelectorAll('.btn-outline-dark')
 
 
@@ -58,7 +59,7 @@
         $.ajax({
             type: 'POST',
             url: "{{ url_for('index') }}",
-            data: JSON.stringify(send_data),
+            data: JSON.stringify({user:user, data:send_data}),
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
         }).done(function (data) {

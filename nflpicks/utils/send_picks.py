@@ -1,11 +1,13 @@
 from nflpicks import db
 from nflpicks.models import Picks
 
+from nflpicks.utils.logs import logging
+
 
 def send_to_db(dt, games_count, games_data, user_data):
 
     if dt.shape[0] == games_count:
-        print('True match completed')
+        logging.info('True match completed')
 
         dt = dt.assign(round=lambda x: games_data['check_round'][0],
                        axis=1)
@@ -13,7 +15,7 @@ def send_to_db(dt, games_count, games_data, user_data):
 
         dt = dt[['picker_id', 'round', 'winner', 'loser']]
 
-        print('Trying to send data to DB')
+        logging.info('Trying to send data to DB')
         _ = dt.apply(lambda x: db.session.add(
                                     Picks(x['picker_id'],
                                           x['round'],
@@ -22,7 +24,11 @@ def send_to_db(dt, games_count, games_data, user_data):
                      axis=1)
 
         db.session.commit()
-        print('[Success] Data in DB')
+        logging.info('[Success] Data sent to DB')
+
+        return 'complete'
 
     else:
-        print('[Failed]  Not Data to Send DB')
+        logging.info('[Failed]  No complete data to send to DB')
+
+    return 'incomplete'

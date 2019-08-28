@@ -4,9 +4,10 @@
 
     const form = document.querySelector('form[name=teamForm]')
     const user = form.getAttribute('user')
-    console.log(form.getAttribute('rounds'))
     const gamesCount = Number(form.getAttribute('rounds'))
     const teamsSelection = document.querySelectorAll('.btn-outline-dark')
+
+    const picksCompleted = document.querySelector('.alert-warning')
 
 
     var placeholder = {}
@@ -27,7 +28,15 @@
                 var win = e.path[0].querySelector('input[name=options]').id
                 games = Object.assign(placeholder, { [game]: win })
             }
-            console.log(games)
+            
+            //console.log('this', games)
+            //console.log((Object.keys(games).length === gamesCount))
+
+            if (Object.keys(games).length === gamesCount){
+                picksCompleted.className = 'alert alert-warning alert-dismissible collapse'
+            }else {
+                picksCompleted.className = 'alert alert-warning alert-dismissible'
+            }
 
         })
 

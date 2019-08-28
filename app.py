@@ -9,6 +9,7 @@ from nflpicks.models import User, Picks
 from nflpicks.forms import LoginForm, RegistrationForm
 
 from nflpicks.utils import get_games, send_picks
+from nflpicks.utils.logs import logging
 
 
 @app.route('/')
@@ -29,7 +30,7 @@ def index():
     user_data = request.get_json()
 
     if user_data:
-        print(f'Current User {user_data["user"]}')
+        logging.info(f'Current User {user_data["user"]}')
 
         user_df = defaultdict(list)
         for key, value in user_data['data'].items():
@@ -39,13 +40,15 @@ def index():
 
         dt = pd.DataFrame(user_df)
 
-        # print(dt)
-        send_picks.send_to_db(dt, games_count, games_data, user_data)
+        # logging.info(dt)
+        status = send_picks.send_to_db(dt, games_count, games_data, user_data)
 
-        status['completed'] = True
+        
+        if status == 'incomplete':
+            flash('Incomplete. You are missing some picks!')
 
     else:
-        print('No Data yet!')
+        logging.info('No Data yet!')
 
     return render_template('index.html',
                            data=query_data,
@@ -55,7 +58,7 @@ def index():
 @app.route('/completed', methods=['GET', 'POST'])
 @login_required
 def completed():
-    print('Complete Function: Completed')
+    logging.info('Complete Function: Completed')
     return render_template('home.html',
                             completed=True)
 
@@ -75,6 +78,10 @@ def login():
     if form.validate_on_submit():
         # Grab the user from our User Models table
         user = User.query.filter_by(email=form.email.data).first()
+
+        # User does not exist
+        if user is None:
+            flash(f'We have no record of user with {form.email.data}')
 
         if user and user.check_password(form.password.data):
             # Log in the user

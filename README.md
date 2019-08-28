@@ -24,11 +24,7 @@ requests                  2.21.0
 # set|export FLASK_DEBUG=1 for debugging
 
 # Set up migration directory
-flask db init
-# Set up migration file
-flask db migrate -m "moving data"
-# Update database with the migration
-flask db upgrade
+python manager.py -db start
 ````
 
 

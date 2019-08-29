@@ -1,6 +1,15 @@
 # NFL Home Baked Picks
 ## TODO
 
+## Run Via Docker
+
+Building image will install packages, create database, and expose the app to port 5000 
+```bash
+docker build -t nflpicks:latest .
+docker run -d -it --name nfl -p 80:5000 nflpicks
+```
+
+
 
 # Requirements
 

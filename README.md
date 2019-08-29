@@ -4,10 +4,13 @@
 ## Run Via Docker
 
 Building image will install packages, create database, and expose the app to port 5000 
+Running via docker, exposing localhost to the Flask app.
+
 ```bash
 docker build -t nflpicks:latest .
 docker run -d -it --name nfl -p 80:5000 nflpicks
 ```
+Open localhost on your browser. NFL Pick pages awaits.
 
 
 
@@ -25,7 +28,6 @@ lxml                      4.3.4
 pandas                    0.25.0
 requests                  2.21.0
 ```
-
 # Start DataBase
 
 ```bash

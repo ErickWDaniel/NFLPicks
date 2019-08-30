@@ -59,8 +59,12 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <!-- I failed to get Flask to read .js from src. This is a hack -->
-    {% extends "js.html" %} {% block javascript %}
-    {% endblock javascript %}
+    {% if request.path == "/games" %}
+        {% extends "js.html" %} {% block javascript %}
+        {% endblock javascript %}
+    {% endif %}
+
+    
 </body>
 
 </html>

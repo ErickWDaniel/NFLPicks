@@ -9,7 +9,7 @@ def send_to_db(dt, games_count, games_data, user_data):
     if dt.shape[0] == games_count:
         logging.info('True match completed')
 
-        dt = dt.assign(round=lambda x: games_data['check_round'][0],
+        dt = dt.assign(round=lambda x: games_data['check_round'][.iloc[0],
                        axis=1)
         dt = dt.assign(picker_id=lambda x: user_data['user'], axis=1)
 

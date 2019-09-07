@@ -38,7 +38,7 @@ def delete_db():
         logging.info('Deleting DataBase')
         input('> [Y/n] Press Enter for Y, Ctrl+C to cancel')
         shutil.rmtree('migrations')
-        db = Path('nflpicks\data\data.sqlite')
+        db = Path('nflpicks/data/data.sqlite')
         db.unlink()
     except Exception as e:
         logging.error('Issues starting DataBase', exc_info=True)

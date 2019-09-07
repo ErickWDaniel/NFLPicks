@@ -17,13 +17,11 @@ class GetGames:
         round_dates = self.games.df.groupby('check_round')[
             'game_dt'].agg(['min', 'max'])
 
-        print(f'Assuming future: actual today {today}')
-        today += pd.Timedelta(days=3)  # Assuming future( Remove later)
-        week_later = today + pd.Timedelta(days=7)
-        print(f'Assuming future: fake today {today}')
+        # test passage of time
+        # today= today + pd.Timedelta(days=3)
 
-        self.round = round_dates[round_dates['min']
-                                 <= week_later].index.values[0]
+        self.round = round_dates[round_dates['max']
+                                 >= today].index.values[0]
 
         self.today = today
 

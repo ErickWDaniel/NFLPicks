@@ -84,3 +84,42 @@ class GetData:
         self.df = df
 
         return self
+
+
+    def scrap_result(self):
+
+        assert self.r.ok, 'Broken'
+
+        calls_soup = BeautifulSoup(self.r.content, 'lxml')
+        games_soup = calls_soup.find('div', {'id': 'sp-c-filter-contents'})
+        games = games_soup.find_all('span', {'class': 'qa-fixture-block'})
+
+        data = defaultdict(list)
+
+        for game in games:
+            data['game_date'].append(game.h3.get_text())
+            data['game_round'].append(game.h5.get_text())
+            data['games'].append([{'home': home['title'], 'away':away['title']} for home, away in [
+                                 g.find_all('abbr') for g in game.find_all('li')]])
+            data['score'].append([{'home': int(home.get_text()), 'away': int(away.get_text())} for home, away in zip(game.find_all('span', class_='sp-c-fixture__number--home'),
+                                                                                                                     game.find_all('span', class_='sp-c-fixture__number--away'))])
+
+        df = pd.DataFrame(data)
+
+        # split data game per rows
+        games = df.explode('games')
+        score = df.explode('score')
+
+        games.drop(columns=['score'], inplace=True)
+        score.drop(columns=['games'], inplace=True)
+        games['score'] = score['score']
+
+        df = games
+
+        df['winner'] = df.apply(lambda x: x['games']['home'] if x['score']
+                                ['home'] > x['score']['away'] else x['games']['away'], axis=1)
+
+
+        self.df = df
+
+        return self

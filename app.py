@@ -8,7 +8,7 @@ from flask_login import login_user, login_required, logout_user
 from nflpicks.models import User, Picks
 from nflpicks.forms import LoginForm, RegistrationForm
 
-from nflpicks.utils import get_games, send_picks
+from nflpicks.utils import get_games, get_winners, send_picks
 from nflpicks.utils.logs import logging
 
 
@@ -28,6 +28,9 @@ def index():
 
     # Data from current user
     user_data = request.get_json()
+
+    # Data frome users and web
+    points = get_winners.get_points()
 
     if user_data:
         logging.info(f'Current User {user_data["user"]}')
@@ -52,6 +55,7 @@ def index():
 
     return render_template('index.html',
                            data=query_data,
+                           points=points,
                            gamesCount=games_count)
 
 

@@ -3,7 +3,7 @@
 
 ![](nflpicks/data/readme_images/1mainnfl.png)
 
-After TV2 stopped their NFL Picks web services, we were left with googlesheets to do our family NFL picks league. My hate of repetitive task lead to this Flask project. At the core, I allow users to register, store their hashed passwords, and allow them to pick the winning NFL teams in each round. Fixtures and results data comes directly from BBC.co.uk  
+After TV2 stopped their NFL Picks web services, we were left with googlesheets to do our family NFL picks league. My hate of repetitive task led to this Flask project. At the core, I allow users to register, store their hashed passwords, and allow them to pick the winning NFL teams in each round. Fixtures and results data comes directly from BBC.co.uk  
 
 ## Run Via Docker
 

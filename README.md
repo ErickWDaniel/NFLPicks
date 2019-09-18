@@ -53,7 +53,7 @@ flask run
 Note: `export` is `set` in Windows
 
 
-### See Data with sqlite
+# See Data with sqlite
 
 ```python
 import sqlite3

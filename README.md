@@ -77,16 +77,16 @@ print(users.head()) # first 5 users
 ```
 
 # Demo Pages
-Register
+### Register
 ![](nflpicks/data/readme_images/2regnfl.png)
 
-Login
+### Login
 ![](nflpicks/data/readme_images/3lognfl.png)
 
-Rounds
+### Rounds
 ![](nflpicks/data/readme_images/4roundnfl.png)
 
-Thanks
+### Thanks
 ![](nflpicks/data/readme_images/5thanksnfl.png)
 
 ## Meta

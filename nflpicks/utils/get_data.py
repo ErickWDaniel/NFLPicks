@@ -31,21 +31,20 @@ class GetData:
     def fetch(self):
 
         call_url = f'{self.BASE_URL}{self.end_point}'
-        self.r = self.session.get(call_url)
+        r = self.session.get(call_url)
+        assert r.ok, 'Broken'
+
+        calls_soup = BeautifulSoup(r.content, 'lxml')
+        games_soup = calls_soup.find('div', {'id': 'sp-c-filter-contents'})
+        self.games = games_soup.find_all('span', {'class': 'qa-fixture-block'})
 
         return self
 
     def scrap_fixture(self):
 
-        assert self.r.ok, 'Broken'
-
-        calls_soup = BeautifulSoup(self.r.content, 'lxml')
-        games_soup = calls_soup.find('div', {'id': 'sp-c-filter-contents'})
-        games = games_soup.find_all('span', {'class': 'qa-fixture-block'})
-
         data = defaultdict(list)
 
-        for game in games:
+        for game in self.games:
             data['game_date'].append(game.h3.get_text())
             data['game_round'].append(game.h5.get_text())
             data['games'].append([{'home': home['title'], 'away':away['title']}
@@ -88,15 +87,9 @@ class GetData:
 
     def scrap_result(self):
 
-        assert self.r.ok, 'Broken'
-
-        calls_soup = BeautifulSoup(self.r.content, 'lxml')
-        games_soup = calls_soup.find('div', {'id': 'sp-c-filter-contents'})
-        games = games_soup.find_all('span', {'class': 'qa-fixture-block'})
-
         data = defaultdict(list)
 
-        for game in games:
+        for game in self.games:
             data['game_date'].append(game.h3.get_text())
             data['game_round'].append(game.h5.get_text())
             data['games'].append([{'home': home['title'], 'away':away['title']} for home, away in [

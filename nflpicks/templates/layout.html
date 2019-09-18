@@ -42,11 +42,11 @@
                     </li>
                     {% endif %}
                 </ul>
-                
+
             </div>
         </nav>
-        <br> 
-         {% block content %}{% endblock %}
+        <br>
+        {% block content %}{% endblock %}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -59,12 +59,11 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <!-- I failed to get Flask to read .js from src. This is a hack -->
-    {% if request.path == "/games" %}
-        {% extends "js.html" %} {% block javascript %}
-        {% endblock javascript %}
-    {% endif %}
 
-    
+    {% if request.path == "/games" %}
+    {% extends "js.html" %} {% block javascript %}
+    {% endblock javascript %}
+    {% endif %}
 </body>
 
 </html>

@@ -28,13 +28,13 @@
                 win = e.path[0].querySelector("input[name=options]").id
                 games = Object.assign(placeholder, { [game]: win })
             }
-            
+
             //console.log("this", games)
             //console.log((Object.keys(games).length === gamesCount))
 
-            if (Object.keys(games).length === gamesCount){
+            if (Object.keys(games).length === gamesCount) {
                 picksCompleted.className = "alert alert-warning alert-dismissible collapse"
-            }else {
+            } else {
                 picksCompleted.className = "alert alert-warning alert-dismissible"
             }
 
@@ -57,7 +57,7 @@
         if (Object.keys(send_data).length === gamesCount) {
 
             console.log("We are done!")
-            window.location.replace("{{ url_for('completed') }}");
+            window.location.replace("{{ url_for("completed") }}");
         } else {
             console.log("You are not done")
             //send note that you are not done
@@ -68,8 +68,8 @@
         // ajax the JSON to the server
         $.ajax({
             type: "POST",
-            url: "{{ url_for('index') }}",
-            data: JSON.stringify({user:user, data:send_data}),
+            url: "{{ url_for("index") }}",
+            data: JSON.stringify({ user: user, data: send_data }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
         }).done(function (data) {

@@ -89,6 +89,14 @@ print(users.head()) # first 5 users
 ### Thanks
 ![](nflpicks/data/readme_images/5thanksnfl.png)
 
+
+# TODO
+
+[ ] Code refactoring
+[ ] Statitic Page
+[ ] Faster loading of fixtures and results
+
+
 ## Meta
 
 Prayson W. Daniel – [@Proteusiq](https://twitter.com/proteusiq) – praysonwilfred@gmail.com

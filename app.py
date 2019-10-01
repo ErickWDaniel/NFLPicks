@@ -1,4 +1,5 @@
 from collections import defaultdict
+import concurrent.futures
 import pandas as pd
 
 
@@ -20,9 +21,17 @@ def home():
 @app.route('/games', methods=['GET', 'POST'])
 @login_required
 def index():
+    
+    # Get online data concurrently
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        games = executor.submit(get_games.GetGames,)
+        points_ = executor.submit(get_winners.get_points,)
+
+        games_data = games.result().round_games
+        points = points_.result()
 
     # Data from Web
-    games_data = get_games.GetGames().round_games
+    # games_data = get_games.GetGames().round_games
     query_data = games_data.to_dict(orient='records')
     games_count = games_data.shape[0]
 
@@ -30,7 +39,7 @@ def index():
     user_data = request.get_json()
 
     # Data frome users and web
-    points = get_winners.get_points()
+    # points = get_winners.get_points()
 
     if user_data:
         logging.info(f'Current User {user_data["user"]}')

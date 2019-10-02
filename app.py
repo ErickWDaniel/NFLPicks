@@ -1,12 +1,14 @@
 from collections import defaultdict
 import concurrent.futures
+import json
 import pandas as pd
-
+import plotly
+import plotly.graph_objs as go
 
 from nflpicks import app, db
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, login_required, logout_user
-from nflpicks.models import User, Picks
+from nflpicks.models import User
 from nflpicks.forms import LoginForm, RegistrationForm
 
 from nflpicks.utils import get_games, get_winners, send_picks
@@ -21,7 +23,7 @@ def home():
 @app.route('/games', methods=['GET', 'POST'])
 @login_required
 def index():
-    
+
     # Get online data concurrently
     with concurrent.futures.ThreadPoolExecutor() as executor:
         games = executor.submit(get_games.GetGames,)
@@ -52,10 +54,11 @@ def index():
 
         dt = pd.DataFrame(user_df)
 
+
         # logging.info(dt)
         status = send_picks.send_to_db(dt, games_count, games_data, user_data)
 
-        
+
         if status == 'incomplete':
             flash('Incomplete. You are missing some picks!')
 
@@ -74,6 +77,32 @@ def completed():
     logging.info('Complete Function: Completed')
     return render_template('home.html',
                             completed=True)
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    logging.info('Results called')
+    data = get_winners.get_points_per_round()
+    df = pd.DataFrame.from_records(data)
+    df = df[df['points']>0]
+    df = df.sort_values(by='round')
+
+    data_ = [
+        go.Scatter(
+            x= df[df['picker_id']==user_id]['round'], 
+            y= df[df['picker_id']==user_id]['points'],
+            name=user_id,
+        ) for user_id in df['picker_id'].unique()
+    ]
+
+    bar = json.dumps(data_, cls=plotly.utils.PlotlyJSONEncoder)
+
+    points = df.groupby(
+        'picker_id')['points'].sum(
+        ).reset_index(
+        ).sort_values('points', ascending=False)
+    
+    return render_template('results.html', plot=bar, points=points.to_dict(orient='records'))
 
 
 @app.route('/logout')

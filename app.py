@@ -1,9 +1,7 @@
 from collections import defaultdict
 import concurrent.futures
-import json
+
 import pandas as pd
-import plotly
-import plotly.graph_objs as go
 
 from nflpicks import app, db
 from flask import render_template, redirect, request, url_for, flash
@@ -11,7 +9,7 @@ from flask_login import login_user, login_required, logout_user
 from nflpicks.models import User
 from nflpicks.forms import LoginForm, RegistrationForm
 
-from nflpicks.utils import get_games, get_winners, send_picks
+from nflpicks.utils import get_games, get_winners, get_graphs, send_picks
 from nflpicks.utils.logs import logging
 
 
@@ -24,7 +22,7 @@ def home():
 @login_required
 def index():
 
-    # Get online data concurrently
+    # Get online and players data concurrently
     with concurrent.futures.ThreadPoolExecutor() as executor:
         games = executor.submit(get_games.GetGames,)
         points_ = executor.submit(get_winners.get_points,)
@@ -32,16 +30,12 @@ def index():
         games_data = games.result().round_games
         points = points_.result()
 
-    # Data from Web
-    # games_data = get_games.GetGames().round_games
+    # prepare data for json consumption
     query_data = games_data.to_dict(orient='records')
     games_count = games_data.shape[0]
 
     # Data from current user
     user_data = request.get_json()
-
-    # Data frome users and web
-    # points = get_winners.get_points()
 
     if user_data:
         logging.info(f'Current User {user_data["user"]}')
@@ -54,8 +48,6 @@ def index():
 
         dt = pd.DataFrame(user_df)
 
-
-        # logging.info(dt)
         status = send_picks.send_to_db(dt, games_count, games_data, user_data)
 
 
@@ -83,26 +75,9 @@ def completed():
 def results():
     logging.info('Results called')
     data = get_winners.get_points_per_round()
-    df = pd.DataFrame.from_records(data)
-    df = df[df['points']>0]
-    df = df.sort_values(by='round')
-
-    data_ = [
-        go.Scatter(
-            x= df[df['picker_id']==user_id]['round'], 
-            y= df[df['picker_id']==user_id]['points'],
-            name=user_id,
-        ) for user_id in df['picker_id'].unique()
-    ]
-
-    bar = json.dumps(data_, cls=plotly.utils.PlotlyJSONEncoder)
-
-    points = df.groupby(
-        'picker_id')['points'].sum(
-        ).reset_index(
-        ).sort_values('points', ascending=False)
+    bar, points = get_graphs.get_results(data)
     
-    return render_template('results.html', plot=bar, points=points.to_dict(orient='records'))
+    return render_template('results.html', plot=bar, points=points)
 
 
 @app.route('/logout')

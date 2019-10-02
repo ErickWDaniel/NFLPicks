@@ -26,6 +26,8 @@ flask-wtf                 0.14.2
 lxml                      4.3.4
 pandas                    0.25.0
 requests                  2.21.0
+plotly                    3.0.0
+
 ```
 # Start DataBase & Run locally
 
@@ -92,9 +94,9 @@ print(users.head()) # first 5 users
 
 # TODO
 
-[ ] Code refactoring
-[ ] Statitic Page
-[ ] Faster loading of fixtures and results
+- [ ] Code refactoring
+- [x] Results Page
+- [x] Faster loading of fixtures and results
 
 
 ## Meta

@@ -16,16 +16,16 @@
 
 
         teamsSelection[index].addEventListener("click", function (e) {
-            if (e.path.length === 14) {
-                game = e.path[2].querySelector(".btn-secondary").querySelector("input[name=options]").id
-                win = e.path[1].querySelector("input[name=options]").id
+            if (e.composedPath().length === 14) {
+                game = e.composedPath()[2].querySelector(".btn-secondary").querySelector("input[name=options]").id
+                win = e.composedPath()[1].querySelector("input[name=options]").id
 
                 games = Object.assign(placeholder, { [game]: win })
 
             }
             else {
-                game = e.path[1].querySelector(".btn-secondary").querySelector("input[name=options]").id
-                win = e.path[0].querySelector("input[name=options]").id
+                game = e.composedPath()[1].querySelector(".btn-secondary").querySelector("input[name=options]").id
+                win = e.composedPath()[0].querySelector("input[name=options]").id
                 games = Object.assign(placeholder, { [game]: win })
             }
 

@@ -39,7 +39,7 @@ class Winners:
         cursor = con.cursor()
 
         check_picks = self.picks.groupby(
-            ['picker_id', 'round']).count().reset_index()
+            ['picker_id', 'round']).count().sort_values(by='round', ascending=False).reset_index()
         correct_picks = check_picks[check_picks['winner'] > 16].rename(
             {'winner': 'n_count'}, axis=1)
 
@@ -49,7 +49,7 @@ class Winners:
             for picker, rounds, wrong in correct_pickers:
                 actual_games_rounds = self.games_rounds.loc[rounds].iloc[0]
                 to_delete = wrong - actual_games_rounds
-                delete_query = (f'''DELETE FROM picks WHERE picks.picker_id = "{picker}" AND picks.round = {rounds} AND picks.id IN (SELECT id FROM picks ORDER BY id DESC LIMIT {to_delete})''')
+                delete_query = (f'''DELETE FROM picks WHERE picks.picker_id = "{picker}" AND picks.round = {rounds} AND picks.id NOT IN (SELECT id FROM picks ORDER BY id DESC LIMIT {to_delete})''')
 
                 logging.info(delete_query)
                 logging.info(f'{picker} had {to_delete} rows removed')
@@ -88,11 +88,3 @@ class Winners:
         self.points = pickers.groupby('picker_id')['points'].sum().reset_index()
 
         return self
-
-
-
-
-
-
-
-

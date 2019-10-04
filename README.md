@@ -95,6 +95,7 @@ print(users.head()) # first 5 users
 # TODO
 
 - [ ] Code refactoring
+- [x] Fix iOS and Safari not submitting issue
 - [x] Results Page
 - [x] Faster loading of fixtures and results
 

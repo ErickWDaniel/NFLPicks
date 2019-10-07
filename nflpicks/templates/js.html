@@ -16,17 +16,24 @@
 
 
         teamsSelection[index].addEventListener("click", function (e) {
-            if (e.composedPath().length === 14) {
-                game = e.composedPath()[2].querySelector(".btn-secondary").querySelector("input[name=options]").id
-                win = e.composedPath()[1].querySelector("input[name=options]").id
 
-                games = Object.assign(placeholder, { [game]: win })
+            var path = e.path || (e.composedPath && e.composedPath())
 
-            }
-            else {
-                game = e.composedPath()[1].querySelector(".btn-secondary").querySelector("input[name=options]").id
-                win = e.composedPath()[0].querySelector("input[name=options]").id
-                games = Object.assign(placeholder, { [game]: win })
+            if(path) {
+                if (path === 14) {
+                    game = path[2].querySelector(".btn-secondary").querySelector("input[name=options]").id
+                    win = path[1].querySelector("input[name=options]").id
+
+                    games = Object.assign(placeholder, { [game]: win })
+
+                }
+                else {
+                    game = path[1].querySelector(".btn-secondary").querySelector("input[name=options]").id
+                    win = path[0].querySelector("input[name=options]").id
+                    games = Object.assign(placeholder, { [game]: win })
+                }
+            }else {
+                console.log('path not supported')
             }
 
             //console.log("this", games)

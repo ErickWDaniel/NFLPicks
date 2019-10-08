@@ -1,70 +1,47 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
     // get selected choice
-
     const form = document.querySelector("form[name=teamForm]")
     const user = form.getAttribute("user")
     const gamesCount = Number(form.getAttribute("rounds"))
     const teamsSelection = document.querySelectorAll(".btn-outline-dark")
-
     const picksCompleted = document.querySelector(".alert-warning")
-
-
     var placeholder = {}
     var games, game, win
     for (let index = 0; index < teamsSelection.length; index++) {
-
-
         teamsSelection[index].addEventListener("click", function (e) {
-
-            var path = e.path || (e.composedPath && e.composedPath())
-
-            if(path) {
-                if (path === 14) {
-                    game = path[2].querySelector(".btn-secondary").querySelector("input[name=options]").id
-                    win = path[1].querySelector("input[name=options]").id
-
-                    games = Object.assign(placeholder, { [game]: win })
-
-                }
-                else {
-                    game = path[1].querySelector(".btn-secondary").querySelector("input[name=options]").id
-                    win = path[0].querySelector("input[name=options]").id
-                    games = Object.assign(placeholder, { [game]: win })
-                }
-            }else {
-                console.log('path not supported')
+            if (e.composedPath().length === 14) {
+                game = e.composedPath()[2].querySelector(".btn-secondary").querySelector("input[name=options]").id
+                win = e.composedPath()[1].querySelector("input[name=options]").id
+                games = Object.assign(placeholder, { [game]: win })
             }
-
+            else {
+                game = e.composedPath()[1].querySelector(".btn-secondary").querySelector("input[name=options]").id
+                win = e.composedPath()[0].querySelector("input[name=options]").id
+                games = Object.assign(placeholder, { [game]: win })
+            }
             //console.log("this", games)
             //console.log((Object.keys(games).length === gamesCount))
-
-            if (Object.keys(games).length === gamesCount){
+            if (Object.keys(games).length === gamesCount) {
                 picksCompleted.className = "alert alert-warning alert-dismissible collapse"
-            }else {
+            } else {
                 picksCompleted.className = "alert alert-warning alert-dismissible"
             }
-
         })
-
     }
-
     window.onclick = function () {
         // setup the button click
-
         document.getElementById("submit-btn").onclick = function () {
             // console.log("give 2 sec to send data")
             sendData(games);
-            setTimeout( function() {
+            setTimeout(function () {
                 taskCompleted(games);
-                }, 2000) ;
+            }, 2000);
         };
     }
-
     function taskCompleted(send_data) {
         console.log(Object.keys(send_data).length, gamesCount)
         if (Object.keys(send_data).length === gamesCount) {
-
             // console.log("We are done! Send games")
             window.location.replace("{{ url_for("completed") }}");
         } else {
@@ -72,13 +49,12 @@
             //send note that you are not done
         }
     }
-
     function sendData(send_data) {
         // ajax the JSON to the server
         $.ajax({
             type: "POST",
             url: "{{ url_for("index") }}",
-            data: JSON.stringify({user:user, data:send_data}),
+            data: JSON.stringify({ user: user, data: send_data }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
         }).done(function (data) {
@@ -87,5 +63,4 @@
         // stop link reloading the page
         event.preventDefault();
     }
-
 </script>

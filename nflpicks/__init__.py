@@ -13,7 +13,7 @@ login_manager = LoginManager()
 
 app = Flask(__name__)
 
-# Often people will also separate these into a separate config.py file
+# This is often separated into a separate config.py file
 app.config['SECRET_KEY'] = 'mysecretkey'
 basedir = Path(__file__).resolve().parent
 uri = basedir.joinpath('data/data.sqlite')
